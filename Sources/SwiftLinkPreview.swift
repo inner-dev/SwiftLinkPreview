@@ -38,17 +38,20 @@ open class SwiftLinkPreview: NSObject {
     public let workQueue: DispatchQueue
     public let responseQueue: DispatchQueue
     public let cache: Cache
+    
+    public var receiverEncoding: String?
 
     public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
 
     // MARK: - Constructor
 
     //Swift-only init with default parameters
-    @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance) {
+    @nonobjc public init(session: URLSession = URLSession.shared, workQueue: DispatchQueue = SwiftLinkPreview.defaultWorkQueue, responseQueue: DispatchQueue = DispatchQueue.main, cache: Cache = DisabledCache.instance, receiverEncoding: String? = nil) {
         self.workQueue = workQueue
         self.responseQueue = responseQueue
         self.cache = cache
         self.session = session
+        self.receiverEncoding = receiverEncoding
     }
 
     //Objective-C init with default parameters
@@ -340,7 +343,7 @@ extension SwiftLinkPreview {
                     return
                 }
             }
-            if let data = data, let urlResponse = urlResponse, let encoding = urlResponse.textEncodingName,
+            if let data = data, let urlResponse = urlResponse, let encoding = urlResponse.textEncodingName ?? receiverEncoding,
                 let source = NSString( data: data, encoding:
                     CFStringConvertEncodingToNSStringEncoding( CFStringConvertIANACharSetNameToEncoding( encoding as CFString ) ) ) {
                 if !cancellable.isCancelled {
