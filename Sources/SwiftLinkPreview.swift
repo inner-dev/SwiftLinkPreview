@@ -40,6 +40,7 @@ open class SwiftLinkPreview: NSObject {
     public let cache: Cache
     
     public var receiverEncoding: String?
+    public var customTitlePattern: String?
 
     public static let defaultWorkQueue = DispatchQueue.global(qos: .userInitiated)
 
@@ -530,7 +531,8 @@ extension SwiftLinkPreview {
         let title = result.title
 
         if title == nil || title?.isEmpty ?? true {
-            if let value = Regex.pregMatchFirst(htmlCode, regex: Regex.titlePattern, index: 2) {
+            let regex = customTitlePattern ?? Regex.titlePattern
+            if let value = Regex.pregMatchFirst(htmlCode, regex: regex, index: 2) {
                 if value.isEmpty {
                     let fromBody: String = self.crawlCode(htmlCode, minimum: SwiftLinkPreview.titleMinimumRelevant)
                     if !fromBody.isEmpty {
