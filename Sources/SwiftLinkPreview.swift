@@ -166,6 +166,10 @@ open class SwiftLinkPreview: NSObject {
         var url = url
         var absoluteString = url.absoluteString + "&id=12"
 
+        if absoluteString.hasPrefix("https://pan.baidu.com/share") {
+            return url
+        }
+        
         if let range = absoluteString.range(of: "url="),
             let lastChar = absoluteString.last,
             let lastCharIndex = absoluteString.range(of: String(lastChar), options: .backwards, range: nil, locale: nil) {
