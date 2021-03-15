@@ -91,15 +91,15 @@ class Regex {
     // Extract matches from string
     static func stringMatches(_ results: [NSTextCheckingResult], text: String, index: Int = 0) -> [String] {
 
+        let count = text.count
         return results.map {
             let range = $0.range(at: index)
-            if text.count > range.location + range.length {
+            if count > range.location + range.length {
                 return (text as NSString).substring(with: range)
             } else {
                 return ""
             }
         }
-
     }
 
     // Return tag pattern
